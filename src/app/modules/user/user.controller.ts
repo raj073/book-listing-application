@@ -21,6 +21,25 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
+const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await UserService.getAllUsers();
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "User Retrieved Successfully",
+      data: users,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "An Error Occurred While Retrieving Users.",
+    });
+  }
+};
+
 const signIn = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -58,4 +77,5 @@ const signIn = async (req: Request, res: Response) => {
 export const UserController = {
   createUser,
   signIn,
+  getAllUsers,
 };

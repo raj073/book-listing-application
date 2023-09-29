@@ -11,12 +11,20 @@ const prisma = new PrismaClient();
 const secretKey = config.jwt.secret || "very-secret";
 
 const createUser = async (data: User): Promise<User> => {
-  console.log("Data:", data);
-
   const result = await prisma.user.create({
     data,
   });
   return result;
+};
+
+const getAllUsers = async () => {
+  try {
+    const users = await prisma.user.findMany();
+
+    return users;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const signIn = async (
@@ -65,4 +73,5 @@ export const UserService = {
   createUser,
   signIn,
   decodeToken,
+  getAllUsers,
 };

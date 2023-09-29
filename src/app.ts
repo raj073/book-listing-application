@@ -13,6 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/v1/auth", UserRoutes);
+app.use("/api/v1", UserRoutes);
 
 //handle not found
 app.use((req: Request, res: Response, next: NextFunction) => {
