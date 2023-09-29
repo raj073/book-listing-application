@@ -1,12 +1,7 @@
 import { PrismaClient, User } from "@prisma/client";
 import jwt, { Secret } from "jsonwebtoken";
 import dotenv from "dotenv";
-
-type DecodedToken = {
-  role: string;
-  userId: string;
-  iat: number;
-};
+import { DecodedToken } from "./user.interface";
 
 dotenv.config();
 
