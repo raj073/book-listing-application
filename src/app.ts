@@ -2,7 +2,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application, NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
-import { UserRoutes } from "./modules/user/user.route";
+import { UserRoutes } from "./app/modules/user/user.route";
 
 const app: Application = express();
 

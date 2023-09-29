@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import sendResponse from "../../shared/sendResponse";
+import sendResponse from "../../../shared/sendResponse";
 import { UserService } from "./user.service";
 
 const secretKey = process.env.JWT_SECRET || "very-secret";
@@ -45,7 +45,7 @@ const signIn = async (req: Request, res: Response) => {
       statusCode: httpStatus.OK,
       message: "User Signin Successfully!",
       data: token,
-      decodedToken, // Include the decoded token in the response
+      decodedToken,
     });
   } catch (error) {
     console.error(error);

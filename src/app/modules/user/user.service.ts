@@ -2,12 +2,13 @@ import { PrismaClient, User } from "@prisma/client";
 import jwt, { Secret } from "jsonwebtoken";
 import dotenv from "dotenv";
 import { DecodedToken } from "./user.interface";
+import config from "../../../config";
 
 dotenv.config();
 
 const prisma = new PrismaClient();
 
-const secretKey = process.env.JWT_SECRET || "very-secret";
+const secretKey = config.jwt.secret || "very-secret";
 
 const createUser = async (data: User): Promise<User> => {
   console.log("Data:", data);
