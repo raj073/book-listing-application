@@ -10,19 +10,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      String   
-  contactNo String
-  address   String
+  id         String @id @default(uuid())
+  name       String
+  email      String @unique
+  password   String
+  role       String
+  contactNo  String
+  address    String
   profileImg String
 }
 
 model Category {
-  id    String  @id @default(uuid()) 
-  title String  
+  id    String @id @default(uuid())
+  title String
+  book  Book[]
+}
+
+model Book {
+  id              String @id @default(uuid())
+  title           String
+  author          String
+  price           Float
+  genre           String
+  publicationDate String
+  categoryId      String 
+
+  // Define a relation to the Category model
+  category Category @relation(fields: [categoryId], references: [id])
 }
