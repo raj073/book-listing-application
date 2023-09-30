@@ -21,3 +21,8 @@ model User {
   address   String
   profileImg String
 }
+
+model Category {
+  id    String  @id @default(uuid()) 
+  title String  
+}
