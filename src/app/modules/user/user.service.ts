@@ -3,6 +3,8 @@ import jwt, { Secret } from "jsonwebtoken";
 import dotenv from "dotenv";
 import { DecodedToken } from "./user.interface";
 import config from "../../../config";
+import httpStatus from "http-status";
+import ApiError from "../../../errors/ApiError";
 
 dotenv.config();
 
@@ -32,6 +34,23 @@ const getSingleUserById = async (id: string): Promise<User | null> => {
     where: {
       id,
     },
+  });
+  return result;
+};
+
+const updateSingleUser = async (
+  id: string,
+  payload: Partial<User>
+): Promise<User | null> => {
+  const isUserExist = await prisma.user.findUnique({ where: { id } });
+
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User Not Found!");
+  }
+
+  const result = await prisma.user.update({
+    where: { id },
+    data: payload,
   });
   return result;
 };
@@ -82,6 +101,7 @@ export const UserService = {
   createUser,
   getAllUsers,
   getSingleUserById,
+  updateSingleUser,
   signIn,
   decodeToken,
 };

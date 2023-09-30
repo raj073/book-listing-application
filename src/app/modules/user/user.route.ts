@@ -8,8 +8,15 @@ const router = express.Router();
 router.post("/signup", UserController.createUser);
 router.post("/signin", UserController.signIn);
 router.get("/users", auth(ENUM_USER_ROLE.ADMIN), UserController.getAllUsers);
-router.get("/users/:id", UserController.getSingleUserById);
+router.get(
+  "/users/:id",
+  auth(ENUM_USER_ROLE.ADMIN),
+  UserController.getSingleUserById
+);
+router.patch(
+  "/users/:id",
+  auth(ENUM_USER_ROLE.ADMIN),
+  UserController.updateSingleUser
+);
 
 export const UserRoutes = router;
-
-//auth(ENUM_USER_ROLE.STUDENT)

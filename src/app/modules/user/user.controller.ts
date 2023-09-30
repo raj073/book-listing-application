@@ -61,6 +61,28 @@ const getSingleUserById = async (req: Request, res: Response) => {
   }
 };
 
+const updateSingleUser = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    console.log("Update ID:", id);
+    console.log("Request Body:", req.body);
+    const result = await UserService.updateSingleUser(id, req.body);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User Updated Successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "An Error Occurred While Updating Single User",
+    });
+  }
+};
+
 const signIn = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -99,5 +121,6 @@ export const UserController = {
   createUser,
   getAllUsers,
   getSingleUserById,
+  updateSingleUser,
   signIn,
 };
