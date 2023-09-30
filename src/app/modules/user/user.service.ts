@@ -55,6 +55,19 @@ const updateSingleUser = async (
   return result;
 };
 
+const deleteSingleUser = async (id: string): Promise<User> => {
+  const isUserExist = await prisma.user.findUnique({ where: { id } });
+
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User Not Found!");
+  }
+
+  const result = await prisma.user.delete({
+    where: { id },
+  });
+  return result;
+};
+
 const signIn = async (
   email: string,
   password: string
@@ -102,6 +115,7 @@ export const UserService = {
   getAllUsers,
   getSingleUserById,
   updateSingleUser,
+  deleteSingleUser,
   signIn,
   decodeToken,
 };

@@ -83,6 +83,26 @@ const updateSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+const deleteSingleUser = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const result = await UserService.deleteSingleUser(id);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User Deleted Successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "An Error Occurred While Deleting User",
+    });
+  }
+};
+
 const signIn = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -122,5 +142,6 @@ export const UserController = {
   getAllUsers,
   getSingleUserById,
   updateSingleUser,
+  deleteSingleUser,
   signIn,
 };
