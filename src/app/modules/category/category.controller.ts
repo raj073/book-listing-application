@@ -19,6 +19,26 @@ const createCategory = async (req: Request, res: Response) => {
   }
 };
 
+const getAllCategories = async (req: Request, res: Response) => {
+  try {
+    const users = await CategoryService.getAllCategories();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Categories Fetched Successfully",
+      data: users,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "An Error Occurred While Retrieving Categories.",
+    });
+  }
+};
+
 export const CategoryController = {
   createCategory,
+  getAllCategories,
 };
