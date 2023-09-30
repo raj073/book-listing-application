@@ -17,7 +17,7 @@ const createUser = async (data: User): Promise<User> => {
   return result;
 };
 
-const getAllUsers = async () => {
+const getAllUsers = async (): Promise<User[]> => {
   try {
     const users = await prisma.user.findMany();
 
@@ -25,6 +25,15 @@ const getAllUsers = async () => {
   } catch (error) {
     throw error;
   }
+};
+
+const getSingleUserById = async (id: string): Promise<User | null> => {
+  const result = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+  return result;
 };
 
 const signIn = async (
@@ -71,7 +80,8 @@ const decodeToken = (token: string, secretKey: Secret): DecodedToken | null => {
 
 export const UserService = {
   createUser,
+  getAllUsers,
+  getSingleUserById,
   signIn,
   decodeToken,
-  getAllUsers,
 };

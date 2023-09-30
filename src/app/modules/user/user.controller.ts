@@ -26,8 +26,8 @@ const getAllUsers = async (req: Request, res: Response) => {
     const users = await UserService.getAllUsers();
 
     sendResponse(res, {
-      statusCode: httpStatus.OK,
       success: true,
+      statusCode: httpStatus.OK,
       message: "User Retrieved Successfully",
       data: users,
     });
@@ -36,6 +36,27 @@ const getAllUsers = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: "An Error Occurred While Retrieving Users.",
+    });
+  }
+};
+
+const getSingleUserById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+    const users = await UserService.getSingleUserById(id);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User Fetched Successfully",
+      data: users,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "An Error Occurred While Retrieving Single Users.",
     });
   }
 };
@@ -76,6 +97,7 @@ const signIn = async (req: Request, res: Response) => {
 
 export const UserController = {
   createUser,
-  signIn,
   getAllUsers,
+  getSingleUserById,
+  signIn,
 };
