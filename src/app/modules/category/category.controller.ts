@@ -38,7 +38,29 @@ const getAllCategories = async (req: Request, res: Response) => {
   }
 };
 
+const getSingleCategoryById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+    const users = await CategoryService.getSingleCategoryById(id);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Category Fetched Successfully",
+      data: users,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "An Error Occurred While Retrieving Category",
+    });
+  }
+};
+
 export const CategoryController = {
   createCategory,
   getAllCategories,
+  getSingleCategoryById,
 };
