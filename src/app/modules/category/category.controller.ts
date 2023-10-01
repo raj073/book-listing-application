@@ -79,9 +79,30 @@ const updateSingleCategory = async (req: Request, res: Response) => {
   }
 };
 
+const deleteSingleCategory = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const result = await CategoryService.deleteSingleCategory(id);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Category Deleted Successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "An Error Occurred While Deleting Category",
+    });
+  }
+};
+
 export const CategoryController = {
   createCategory,
   getAllCategories,
   getSingleCategoryById,
   updateSingleCategory,
+  deleteSingleCategory,
 };

@@ -50,9 +50,25 @@ const updateSingleCategory = async (
   return result;
 };
 
+const deleteSingleCategory = async (id: string): Promise<Category> => {
+  const isCategoryExist = await prisma.category.findUnique({ where: { id } });
+
+  console.log(isCategoryExist);
+
+  if (!isCategoryExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Category Not Found!");
+  }
+
+  const result = await prisma.category.delete({
+    where: { id },
+  });
+  return result;
+};
+
 export const CategoryService = {
   createCategory,
   getAllCategories,
   getSingleCategoryById,
   updateSingleCategory,
+  deleteSingleCategory,
 };
