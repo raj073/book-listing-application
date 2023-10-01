@@ -1,4 +1,6 @@
 import { PrismaClient, Category } from "@prisma/client";
+import httpStatus from "http-status";
+import ApiError from "../../../errors/ApiError";
 
 const prisma = new PrismaClient();
 
@@ -31,8 +33,26 @@ const getSingleCategoryById = async (id: string): Promise<Category | null> => {
   return result;
 };
 
+const updateSingleCategory = async (
+  id: string,
+  payload: Partial<Category>
+): Promise<Category | null> => {
+  const isCategoryExist = await prisma.category.findUnique({ where: { id } });
+
+  if (!isCategoryExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Category Not Found!");
+  }
+
+  const result = await prisma.category.update({
+    where: { id },
+    data: payload,
+  });
+  return result;
+};
+
 export const CategoryService = {
   createCategory,
   getAllCategories,
   getSingleCategoryById,
+  updateSingleCategory,
 };
