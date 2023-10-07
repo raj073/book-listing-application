@@ -49,6 +49,42 @@ const getAllBooks = async (req: Request, res: Response) => {
   }
 };
 
+const getBooksByCategoryId = async (req: Request, res: Response) => {
+  try {
+    const { categoryId } = req.params;
+    const page = parseInt(req.query.page as string) || 1;
+    const size = parseInt(req.query.size as string) || 10;
+
+    console.log(categoryId, page, size);
+
+    const books = await BookService.getBooksByCategoryId(
+      categoryId,
+      page,
+      size
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Books with Associated Category Data Fetched Successfully",
+      meta: {
+        page,
+        size,
+        total: books.length,
+        totalpage: Math.ceil(books.length / size),
+      },
+      data: books,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message:
+        "An Error Occurred While Fetching Books with Associated Category",
+    });
+  }
+};
+
 const getSingleBook = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -115,6 +151,7 @@ const deleteSingleBook = async (req: Request, res: Response) => {
 export const BookController = {
   createBook,
   getAllBooks,
+  getBooksByCategoryId,
   getSingleBook,
   updateSingleBook,
   deleteSingleBook,

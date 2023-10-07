@@ -33,6 +33,30 @@ const getAllBooks = async (page: number, size: number): Promise<Book[]> => {
   }
 };
 
+const getBooksByCategoryId = async (
+  categoryId: string,
+  page: number,
+  size: number
+): Promise<Book[]> => {
+  try {
+    const offset = (page - 1) * size;
+    const books = await prisma.book.findMany({
+      where: { categoryId },
+      skip: offset,
+      take: size,
+      include: {
+        category: true,
+      },
+    });
+
+    return books;
+  } catch (error) {
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
 const getSingleBook = async (id: string): Promise<Book[]> => {
   try {
     const book = await prisma.book.findMany({
@@ -80,6 +104,7 @@ const deleteSingleBook = async (id: string): Promise<Book> => {
 export const BookService = {
   createBook,
   getAllBooks,
+  getBooksByCategoryId,
   getSingleBook,
   updateSingleBook,
   deleteSingleBook,
