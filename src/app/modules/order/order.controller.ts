@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import httpStatus from "http-status";
+import sendResponse from "../../../shared/sendResponse";
 import { OrderService } from "./order.service";
 
 const secretKey = process.env.JWT_SECRET || "very-secret";
@@ -10,16 +12,16 @@ const createOrder = async (req: Request, res: Response) => {
   try {
     if (token) {
       const decodedToken = OrderService.decodeToken(token, secretKey);
-      console.log(decodedToken);
       if (decodedToken) {
         const order = await OrderService.createOrder(
           decodedToken?.userId,
           orderedBooks
         );
-        res.status(200).json({
+
+        sendResponse(res, {
           success: true,
-          statusCode: 200,
-          message: "Order created successfully",
+          statusCode: httpStatus.OK,
+          message: "Order Created Successfully",
           data: {
             id: order.id,
             userId: order.userId,
@@ -34,11 +36,74 @@ const createOrder = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       statusCode: 500,
-      message: "Internal Server Error",
+      message: "An Error Occurred While Creating Orders",
+    });
+  }
+};
+
+const getAllOrder = async (req: Request, res: Response) => {
+  try {
+    const orders = await OrderService.getAllOrder();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Orders Retrieved Successfully",
+      data: orders,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "An Error Occurred While Retrieving Orders",
+    });
+  }
+};
+
+const getSingleOrderById = async (req: Request, res: Response) => {
+  try {
+    const token = req.header("Authorization");
+    const { orderId } = req.params;
+
+    if (token) {
+      const decodedToken = OrderService.decodeToken(token, secretKey);
+
+      const userId = decodedToken?.userId;
+      const isAdmin = decodedToken?.role === "admin";
+      console.log(token, userId, isAdmin);
+
+      if (userId && isAdmin) {
+        const order = await OrderService.getSingleOrderById(
+          orderId,
+          userId,
+          isAdmin
+        );
+
+        sendResponse(res, {
+          success: true,
+          statusCode: httpStatus.OK,
+          message: "Order Fetched Successfully",
+          data: order,
+        });
+      } else {
+        sendResponse(res, {
+          success: false,
+          statusCode: httpStatus.NOT_FOUND,
+          message: "You are not Authorized or Order Not Found",
+        });
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "An Error Occurred While Retrieving Order",
     });
   }
 };
 
 export const OrderController = {
   createOrder,
+  getAllOrder,
+  getSingleOrderById,
 };

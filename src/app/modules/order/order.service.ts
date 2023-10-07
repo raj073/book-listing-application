@@ -1,4 +1,4 @@
-import { OrderedBook } from "@prisma/client";
+import { Order, OrderedBook } from "@prisma/client";
 import httpStatus from "http-status";
 import jwt, { Secret } from "jsonwebtoken";
 import ApiError from "../../../errors/ApiError";
@@ -38,6 +38,45 @@ const createOrder = async (userId: string, orderedBooks: OrderedBook[]) => {
   }
 };
 
+const getAllOrder = async (): Promise<Order[]> => {
+  try {
+    const orders = await prisma.order.findMany({
+      include: {
+        orderedBooks: true,
+      },
+    });
+
+    return orders;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getSingleOrderById = async (
+  orderId: string,
+  userId: string,
+  isAdmin: boolean
+) => {
+  console.log(orderId, userId, isAdmin);
+  const order = await prisma.order.findUnique({
+    where: {
+      id: orderId,
+    },
+    include: {
+      orderedBooks: true,
+    },
+  });
+
+  if (!order) {
+    throw new Error("Order not found");
+  }
+
+  if (!isAdmin && order.userId !== userId) {
+    throw new Error("Access denied");
+  }
+  return order;
+};
+
 const decodeToken = (token: string, secretKey: Secret): DecodedToken | null => {
   try {
     const decoded = jwt.verify(token, secretKey) as DecodedToken;
@@ -51,4 +90,6 @@ const decodeToken = (token: string, secretKey: Secret): DecodedToken | null => {
 export const OrderService = {
   createOrder,
   decodeToken,
+  getAllOrder,
+  getSingleOrderById,
 };
