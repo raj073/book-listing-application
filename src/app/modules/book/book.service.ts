@@ -1,4 +1,6 @@
 import { Book, PrismaClient } from "@prisma/client";
+import httpStatus from "http-status";
+import ApiError from "../../../errors/ApiError";
 
 const prisma = new PrismaClient();
 
@@ -45,8 +47,26 @@ const getSingleBook = async (id: string): Promise<Book[]> => {
   }
 };
 
+const updateSingleBook = async (
+  id: string,
+  payload: Partial<Book>
+): Promise<Book | null> => {
+  const isBookExist = await prisma.book.findUnique({ where: { id } });
+
+  if (!isBookExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Book Not Found!");
+  }
+
+  const result = await prisma.book.update({
+    where: { id },
+    data: payload,
+  });
+  return result;
+};
+
 export const BookService = {
   createBook,
   getAllBooks,
   getSingleBook,
+  updateSingleBook,
 };
