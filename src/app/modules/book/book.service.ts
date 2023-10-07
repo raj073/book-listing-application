@@ -31,7 +31,22 @@ const getAllBooks = async (page: number, size: number): Promise<Book[]> => {
   }
 };
 
+const getSingleBook = async (id: string): Promise<Book[]> => {
+  try {
+    const book = await prisma.book.findMany({
+      where: { id },
+    });
+
+    return book;
+  } catch (error) {
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
 export const BookService = {
   createBook,
   getAllBooks,
+  getSingleBook,
 };

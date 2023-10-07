@@ -49,7 +49,31 @@ const getAllBooks = async (req: Request, res: Response) => {
   }
 };
 
+const getSingleBook = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    console.log(id);
+
+    const book = await BookService.getSingleBook(id);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Book Fetched Successfully",
+      data: book,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "An Error Occurred While Fetching Book.",
+    });
+  }
+};
+
 export const BookController = {
   createBook,
   getAllBooks,
+  getSingleBook,
 };
