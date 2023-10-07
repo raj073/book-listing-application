@@ -39,3 +39,20 @@ model Book {
   // Define a relation to the Category model
   category Category @relation(fields: [categoryId], references: [id])
 }
+
+model OrderedBook {
+  id        String  @id @default(uuid())
+  orderId   String
+  bookId    String
+  quantity  Int
+
+  order     Order       @relation(fields: [orderId], references: [id])
+}
+
+model Order {
+  id            String      @id @default(uuid())
+  userId        String
+  orderedBooks  OrderedBook[]
+  status        String      @default("pending")
+  createdAt     DateTime    @default(now())
+}

@@ -4,6 +4,7 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import { BookRoutes } from "./app/modules/book/book.route";
 import { CategoryRoutes } from "./app/modules/category/category.route";
+import { OrderRoutes } from "./app/modules/order/order.route";
 import { UserRoutes } from "./app/modules/user/user.route";
 
 const app: Application = express();
@@ -23,6 +24,9 @@ app.use("/api/v1/categories", CategoryRoutes);
 
 //Book
 app.use("/api/v1/books", BookRoutes);
+
+//Order
+app.use("/api/v1/orders", OrderRoutes);
 
 //handle not found
 app.use((req: Request, res: Response, next: NextFunction) => {
