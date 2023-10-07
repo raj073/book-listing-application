@@ -64,9 +64,23 @@ const updateSingleBook = async (
   return result;
 };
 
+const deleteSingleBook = async (id: string): Promise<Book> => {
+  const isBookExist = await prisma.book.findUnique({ where: { id } });
+
+  if (!isBookExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Book Not Found!");
+  }
+
+  const result = await prisma.book.delete({
+    where: { id },
+  });
+  return result;
+};
+
 export const BookService = {
   createBook,
   getAllBooks,
   getSingleBook,
   updateSingleBook,
+  deleteSingleBook,
 };
