@@ -5,6 +5,7 @@ import httpStatus from "http-status";
 import { BookRoutes } from "./app/modules/book/book.route";
 import { CategoryRoutes } from "./app/modules/category/category.route";
 import { OrderRoutes } from "./app/modules/order/order.route";
+import { ProfileRoutes } from "./app/modules/profile/profile.route";
 import { UserRoutes } from "./app/modules/user/user.route";
 
 const app: Application = express();
@@ -27,6 +28,9 @@ app.use("/api/v1/books", BookRoutes);
 
 //Order
 app.use("/api/v1/orders", OrderRoutes);
+
+//Profile
+app.use("/api/v1/profile", ProfileRoutes);
 
 //handle not found
 app.use((req: Request, res: Response, next: NextFunction) => {

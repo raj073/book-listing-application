@@ -3,8 +3,8 @@ import httpStatus from "http-status";
 import jwt, { Secret } from "jsonwebtoken";
 import ApiError from "../../../errors/ApiError";
 import { DecodedToken } from "../user/user.interface";
+import { PrismaClient } from "@prisma/client";
 
-const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const createOrder = async (userId: string, orderedBooks: OrderedBook[]) => {
@@ -57,7 +57,6 @@ const getSingleOrderById = async (
   userId: string,
   isAdmin: boolean
 ) => {
-  console.log(orderId, userId, isAdmin);
   const order = await prisma.order.findUnique({
     where: {
       id: orderId,
