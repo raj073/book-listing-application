@@ -13,7 +13,6 @@ const getProfile = async (req: Request, res: Response) => {
       const decodedToken = ProfileService.decodeToken(token, secretKey);
 
       const userId = decodedToken?.userId;
-      console.log(token, userId);
 
       if (userId) {
         const order = await ProfileService.getprofile(userId);

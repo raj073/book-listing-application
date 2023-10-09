@@ -60,6 +60,38 @@ const getAllOrder = async (req: Request, res: Response) => {
   }
 };
 
+const getAllOrderForSpecificCustomers = async (req: Request, res: Response) => {
+  try {
+    const token = req.header("Authorization");
+
+    if (token) {
+      const decodedToken = OrderService.decodeToken(token, secretKey);
+
+      const userId = decodedToken?.userId;
+      const role = decodedToken?.role;
+      console.log(token, userId);
+      if (userId && role) {
+        const orders = await OrderService.getAllOrderForSpecificCustomers(
+          userId,
+          role
+        );
+        sendResponse(res, {
+          success: true,
+          statusCode: httpStatus.OK,
+          message: "Orders Retrieved Successfully",
+          data: orders,
+        });
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "An Error Occurred While Retrieving Orders",
+    });
+  }
+};
+
 const getSingleOrderById = async (req: Request, res: Response) => {
   try {
     const token = req.header("Authorization");
@@ -69,14 +101,13 @@ const getSingleOrderById = async (req: Request, res: Response) => {
       const decodedToken = OrderService.decodeToken(token, secretKey);
 
       const userId = decodedToken?.userId;
-      const isAdmin = decodedToken?.role === "admin";
-      console.log(token, userId, isAdmin);
+      const role = decodedToken?.role;
 
-      if (userId && isAdmin) {
+      if (userId && role) {
         const order = await OrderService.getSingleOrderById(
           orderId,
           userId,
-          isAdmin
+          role
         );
 
         sendResponse(res, {
@@ -97,7 +128,8 @@ const getSingleOrderById = async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "An Error Occurred While Retrieving Order",
+      statusCode: httpStatus.NOT_FOUND,
+      message: "You are not Authorized or Order Not Found",
     });
   }
 };
@@ -105,5 +137,6 @@ const getSingleOrderById = async (req: Request, res: Response) => {
 export const OrderController = {
   createOrder,
   getAllOrder,
+  getAllOrderForSpecificCustomers,
   getSingleOrderById,
 };

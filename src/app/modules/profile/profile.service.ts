@@ -11,8 +11,6 @@ const getprofile = async (userId: string): Promise<User> => {
     },
   });
 
-  console.log(user);
-
   if (!user) {
     throw new Error("User not Found");
   }

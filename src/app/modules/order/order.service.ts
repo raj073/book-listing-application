@@ -52,11 +52,34 @@ const getAllOrder = async (): Promise<Order[]> => {
   }
 };
 
+const getAllOrderForSpecificCustomers = async (
+  userId: string,
+  role: string
+) => {
+  try {
+    console.log(userId, role);
+    if ((role = "customer")) {
+      const orders = await prisma.order.findMany({
+        where: { userId: userId },
+        include: {
+          orderedBooks: true,
+        },
+      });
+      return orders;
+    } else {
+      throw new ApiError(httpStatus.FORBIDDEN, "Access Denied");
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getSingleOrderById = async (
   orderId: string,
   userId: string,
-  isAdmin: boolean
+  role: string
 ) => {
+  console.log(orderId, userId, role);
   const order = await prisma.order.findUnique({
     where: {
       id: orderId,
@@ -70,8 +93,8 @@ const getSingleOrderById = async (
     throw new Error("Order not found");
   }
 
-  if (!isAdmin && order.userId !== userId) {
-    throw new Error("Access denied");
+  if (role !== "admin" && order.userId !== userId) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Access denied");
   }
   return order;
 };
@@ -88,7 +111,8 @@ const decodeToken = (token: string, secretKey: Secret): DecodedToken | null => {
 
 export const OrderService = {
   createOrder,
-  decodeToken,
   getAllOrder,
+  getAllOrderForSpecificCustomers,
   getSingleOrderById,
+  decodeToken,
 };

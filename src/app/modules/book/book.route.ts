@@ -11,11 +11,7 @@ router.post(
   BookController.createBook
 );
 
-router.get(
-  "/",
-  //auth(ENUM_USER_ROLE.ADMIN),
-  BookController.getAllBooks
-);
+router.get("/", BookController.getAllBooks);
 
 router.get("/:categoryId/category", BookController.getBooksByCategoryId);
 

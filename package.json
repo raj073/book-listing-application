@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only src/index.ts"
+    "start": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "postinstall": "prisma generate"
   },
   "license": "MIT",
   "dependencies": {
