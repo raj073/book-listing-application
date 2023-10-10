@@ -2,7 +2,7 @@
 
 # Live Link:
 
-# Application Routes:
+# Application Routes
 
 # Main Part:
 
@@ -35,11 +35,9 @@
 # Orders
 
 - api/v1/orders (POST Method) (Create Order - Only Allowed for Customer)
-- api/v1/orders (GET Method) (Get All Order - Only Allowed for Admin)
 - api/v1/orders (GET Method) (Get all Order for specific Customers → Only Specific Customers)
 
 # Bonus Part
 
-- api/v1/orders/:orderId (Get) (Get single order by Id → Only for specific customer and admins)
-
+- api/v1/orders/a3699384-6876-48fb-93e5-914445de7538 (Get) (Get single order by Id → Only for specific customer and admins)
 - api/v1/profile (GET) (Get User Profile Data → Only for specific user (customer and admin))

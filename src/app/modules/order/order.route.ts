@@ -15,11 +15,6 @@ router.post(
 
 router.get("/", OrderController.getAllOrderForSpecificCustomers);
 
-router.get(
-  "/:orderId",
-  // auth(ENUM_USER_ROLE.ADMIN),
-  // auth(ENUM_USER_ROLE.CUSTOMER),
-  OrderController.getSingleOrderById
-);
+router.get("/:orderId", OrderController.getSingleOrderById);
 
 export const OrderRoutes = router;
