@@ -1,6 +1,6 @@
 # Application Name: Book Listing Application
 
-# Live Link:
+# Live Link: https://book-listing-application-jet.vercel.app/
 
 # Application Routes
 
@@ -10,18 +10,18 @@
 
 - api/v1/auth/signup (POST) (Create User or Signup)
 - api/v1/auth/signin (POST) (Signin)
-- api/v1/users (GET) (Get All User)
-- api/v1/users/528cec23-fc30-42ea-8337-71e34d725f17 (GET) (Get a Single User)
-- api/v1/users/528cec23-fc30-42ea-8337-71e34d725f17 (PATCH) (Update a Single User)
-- api/v1/users/528cec23-fc30-42ea-8337-71e34d725f17 (DELETE) (Delete a Single User)
+- api/v1/users (GET) (Get All User - Only Allowed for Admin)
+- api/v1/users/528cec23-fc30-42ea-8337-71e34d725f17 (GET) (Get a Single User - Only Allowed for Admin)
+- api/v1/users/528cec23-fc30-42ea-8337-71e34d725f17 (PATCH) (Update a Single User - Only Allowed for Admin)
+- api/v1/users/528cec23-fc30-42ea-8337-71e34d725f17 (DELETE) (Delete a Single User - Only Allowed for Admin)
 
 # Category
 
 - api/v1/categories/create-category (POST) (Create a Book Category)
 - api/v1/categories (GET) (Get All Category)
 - api/v1/categories/b72ff9a3-62b7-4647-81fa-5fb040276ee7 (Single GET) (Get a Single Category)
-- api/v1/categories/90b2e144-9c21-43e4-916a-a9b00b8befe5 (PATCH) (Update a Single Category)
-- api/v1/categories/b72ff9a3-62b7-4647-81fa-5fb040276ee7 (DELETE) (Delete a Single Category)
+- api/v1/categories/90b2e144-9c21-43e4-916a-a9b00b8befe5 (PATCH) (Update a Single Category - Only Allowed for Admin)
+- api/v1/categories/b72ff9a3-62b7-4647-81fa-5fb040276ee7 (DELETE) (Delete a Single Category - Only Allowed for Admin)
 
 # Books
 
