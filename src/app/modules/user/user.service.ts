@@ -91,7 +91,7 @@ const signIn = async (
         userId: user.id,
       },
       secretKey,
-      { expiresIn: "1y" }
+      { expiresIn: "1y" } // Token expires date 1y
     );
 
     return token;
